@@ -41,7 +41,7 @@ router.route('/').post((req, res) => {
                     res.status(400).send('adding new movie failed');
                 });
         })
-        .catch(err => res.status(400).send(err);
+        .catch(err => res.status(400).send(err));
 });
 
 // UPDATE A MOVIE
