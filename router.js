@@ -3,21 +3,24 @@ const Movie = require('./models/movie.model');
 const axios = require('axios');
 
 const {tmdbKey} = require('./config/keys');
+const {categorize} = require('./utils');
 
 // GET ALL MOVIES
 router.route('/').get((req, res) => {
     Movie.find(function(err, movies) {
         if (err) {console.log(err);}
-        else {res.json(movies);}
+        else {
+            let categorized = categorize(movies);
+            console.log(categorized);
+            res.json(categorized);
+        }
     });
 });
 
 // GET ONE MOVIE
 router.route('/:id').get((req, res) => {
     const {id} = req.params;
-    Movie.findById(id, function(err, movie) {
-        res.json(movie);
-    });
+    Movie.findById(id, function(err, movie) {res.json(movie);});
 });
 
 // ADD A MOVIE
