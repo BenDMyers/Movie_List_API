@@ -75,6 +75,7 @@ router.route('/:id').delete((req, res) => {
 });
 
 /***** VOTES *****/
+// VOTE FOR A MOVIE
 router.route('/:movie/votes/:uuid').post((req, res) => {
     Movie.findByIdAndUpdate(req.params.movie, {$addToSet: {votes: req.params.uuid}}, {new: false}, (err, movie) => {
         if (!movie) {
@@ -84,6 +85,28 @@ router.route('/:movie/votes/:uuid').post((req, res) => {
             movie.save().then(movie => {
                 if(movie.votes.includes(req.params.uuid)) {
                     res.status(409).send('User has already voted for this movie.')
+                } else {
+                    res.status(200).send('Movie updated.');
+                }
+            })
+            .catch(err => {
+                res.status(400).send("Update not possible");
+            });
+        }
+    });
+});
+
+// UNVOTE FOR A MOVIE
+router.route('/:movie/votes/:uuid').delete((req, res) => {
+    Movie.findByIdAndUpdate(req.params.movie, {$pull: {votes: req.params.uuid}}, {new: false}, (err, movie) => {
+        if (!movie) {
+            res.status(404).send("Movie not found");
+        }
+        else {
+            movie.save().then(oldMovie => {
+                console.log(req.params.uuid, '\n', oldMovie, '\n', movie)
+                if(!oldMovie.votes.includes(req.params.uuid)) {
+                    res.status(404).send('User has not voted for this movie.')
                 } else {
                     res.status(200).send('Movie updated.');
                 }
