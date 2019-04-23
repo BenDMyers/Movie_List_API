@@ -11,7 +11,6 @@ router.route('/').get((req, res) => {
         if (err) {console.log(err);}
         else {
             let categorized = categorize(movies);
-            console.log(categorized);
             res.json(categorized);
         }
     });
@@ -71,6 +70,27 @@ router.route('/:id').delete((req, res) => {
             res.status(404).send("data is not found");
         else {
             res.status(200).send('Movie updated!');
+        }
+    });
+});
+
+/***** VOTES *****/
+router.route('/:movie/votes/:uuid').post((req, res) => {
+    Movie.findByIdAndUpdate(req.params.movie, {$addToSet: {votes: req.params.uuid}}, {new: false}, (err, movie) => {
+        if (!movie) {
+            res.status(404).send("Movie not found");
+        }
+        else {
+            movie.save().then(movie => {
+                if(movie.votes.includes(req.params.uuid)) {
+                    res.status(409).send('User has already voted for this movie.')
+                } else {
+                    res.status(200).send('Movie updated.');
+                }
+            })
+            .catch(err => {
+                res.status(400).send("Update not possible");
+            });
         }
     });
 });
