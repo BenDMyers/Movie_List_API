@@ -78,15 +78,7 @@ router.route('/:id').delete((req, res) => {
 /***** VOTES *****/
 // VOTE FOR A MOVIE
 router.route('/:movie/votes').post((req, res) => {
-    let userId = req.cookies && req.cookies.BEN_MOVIES;
-
-    // Check cookies
-    if(!userId) {
-        userId = uuid();
-        res.cookie('BEN_MOVIES', userId);
-    };
-
-    // Update movie
+    let userId = req.body.uuid;
     Movie.findByIdAndUpdate(req.params.movie, {$addToSet: {votes: userId}}, {new: false}, (err, movie) => {
         if (!movie) {
             res.status(404).send("Movie not found");
@@ -107,15 +99,7 @@ router.route('/:movie/votes').post((req, res) => {
 
 // REMOVE VOTE FOR A MOVIE
 router.route('/:movie/votes').delete((req, res) => {
-    let userId = req.cookies && req.cookies.BEN_MOVIES;
-
-    // Check cookies
-    if(!userId) {
-        userId = uuid();
-        res.cookie('BEN_MOVIES', userId);
-    };
-
-    // Update movie
+    let userId = req.body.uuid;
     Movie.findByIdAndUpdate(req.params.movie, {$pull: {votes: userId}}, {new: false}, (err, movie) => {
         if (!movie) {
             res.status(404).send("Movie not found");
