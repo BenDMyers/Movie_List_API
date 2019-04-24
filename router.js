@@ -105,6 +105,7 @@ router.route('/:movie/votes').delete((req, res) => {
             res.status(404).send("Movie not found");
         } else {
             movie.save().then(oldMovie => {
+                console.log(movie, oldMovie);
                 if(!oldMovie.votes.includes(userId)) {
                     res.status(404).send('User has not voted for this movie.')
                 } else {
