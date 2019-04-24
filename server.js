@@ -12,7 +12,7 @@ const router = require('./router');
 app.use(cookieParser());
 app.use(cors({
     credentials: true,
-    origin: 'https://bdm-watchlist-ui.herokuapp.com',
+    origin: ['https://bdm-watchlist-ui.herokuapp.com', 'https://bdm-watchlist-ui.herokuapp.com/', 'http://localhost:3000', 'http://localhost:3000/'],
 }));
 app.use(bodyParser.json());
 app.use('/movies/', router);
