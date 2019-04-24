@@ -78,7 +78,7 @@ router.route('/:id').delete((req, res) => {
 /***** VOTES *****/
 // VOTE FOR A MOVIE
 router.route('/:movie/votes').post((req, res) => {
-    let userId = req.cookie.BEN_MOVIES;
+    let userId = req.cookies && req.cookies.BEN_MOVIES;
 
     // Check cookies
     if(!userId) {
@@ -107,7 +107,7 @@ router.route('/:movie/votes').post((req, res) => {
 
 // REMOVE VOTE FOR A MOVIE
 router.route('/:movie/votes').delete((req, res) => {
-    let userId = req.cookie.BEN_MOVIES;
+    let userId = req.cookies && req.cookies.BEN_MOVIES;
 
     // Check cookies
     if(!userId) {
