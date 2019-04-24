@@ -10,7 +10,10 @@ const {mongoURI} = require('./config/keys');
 const router = require('./router');
 
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: 'https://bdm-waitlist-ui.herokuapp.com/',
+}));
 app.use(bodyParser.json());
 app.use('/movies/', router);
 
