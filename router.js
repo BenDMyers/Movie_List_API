@@ -47,34 +47,6 @@ router.route('/').post((req, res) => {
         .catch(err => res.status(400).send(err));
 });
 
-// UPDATE A MOVIE
-router.route('/:id').post((req, res) => {
-    Movie.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, movie) => {
-        if (!movie) {
-            res.status(404).send("data is not found");
-        }
-        else {
-            movie.save().then(movie => {
-                res.status(200).send('Movie updated!');
-            })
-            .catch(err => {
-                res.status(400).send("Update not possible");
-            });
-        }
-    });
-});
-
-// REMOVE A MOVIE
-router.route('/:id').delete((req, res) => {
-    Movie.findByIdAndRemove(req.params.id, (err, movie) => {
-        if (!movie)
-            res.status(404).send("data is not found");
-        else {
-            res.status(200).send('Movie updated!');
-        }
-    });
-});
-
 /***** VOTES *****/
 // VOTE FOR A MOVIE
 router.route('/:movie/votes').post((req, res) => {
