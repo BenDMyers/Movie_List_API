@@ -1,3 +1,5 @@
+const authorization = require('auth-header');
+
 const categorize = (megalist) => {
     return megalist.reduce((lists, movie) => {
         if(lists[movie.list]) {
@@ -8,6 +10,20 @@ const categorize = (megalist) => {
             return {...lists, [movie.list]: [movie]};
         }
     }, {});
+};
+
+const reshape = (movie, userId) => {
+    const {_id, votes, list, id, title, year, poster, updatedDate} = movie;
+    return {
+        _id, list, id, title, year, poster, updatedDate,
+        numVotes: votes.length,
+        userHasAlreadyVoted: userId && votes.includes(userId)
+    };
+};
+
+const getUserId = (authHeader) => {
+    var auth = authorization.parse(authHeader);
+    return Buffer(auth.token, 'base64').toString().replace(':', '');
 }
 
-module.exports = {categorize};
+module.exports = {categorize, reshape, getUserId};

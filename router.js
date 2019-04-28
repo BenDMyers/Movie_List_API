@@ -3,24 +3,19 @@ const axios = require('axios');
 const uuid = require('uuid/v4');
 
 const {tmdbKey} = require('./config/keys');
-const {categorize} = require('./utils');
+const {categorize, reshape, getUserId} = require('./utils');
 const Movie = require('./models/movie.model');
 
 // GET ALL MOVIES
 router.route('/').get((req, res) => {
-    Movie.find(function(err, movies) {
+    Movie.find((err, movies) => {
         if (err) {console.log(err);}
         else {
-            let categorized = categorize(movies);
+            let reshapedMovies = movies.map((movie) => reshape(movie, getUserId(req.headers.authorization)));
+            let categorized = categorize(reshapedMovies);
             res.json(categorized);
         }
     });
-});
-
-// GET ONE MOVIE
-router.route('/:id').get((req, res) => {
-    const {id} = req.params;
-    Movie.findById(id, function(err, movie) {res.json(movie);});
 });
 
 // ADD A MOVIE
