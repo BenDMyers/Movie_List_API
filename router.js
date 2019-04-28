@@ -45,7 +45,7 @@ router.route('/').post((req, res) => {
 /***** VOTES *****/
 // VOTE FOR A MOVIE
 router.route('/:movie/votes').post((req, res) => {
-    let userId = req.body.uuid;
+    let userId = getUserId(req.headers.authorization);
     Movie.findByIdAndUpdate(req.params.movie, {$addToSet: {votes: userId}}, {new: false}, (err, movie) => {
         if (!movie) {
             res.status(404).send("Movie not found");
@@ -66,7 +66,7 @@ router.route('/:movie/votes').post((req, res) => {
 
 // REMOVE VOTE FOR A MOVIE
 router.route('/:movie/votes').delete((req, res) => {
-    let userId = req.body.uuid;
+    let userId = getUserId(req.headers.authorization);
     Movie.findByIdAndUpdate(req.params.movie, {$pull: {votes: userId}}, {new: false}, (err, movie) => {
         if (!movie) {
             res.status(404).send("Movie not found");
