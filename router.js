@@ -18,6 +18,16 @@ router.route('/').get((req, res) => {
     });
 });
 
+// GET ONE MOVIE
+router.route('/:id').get((req, res) => {
+    Movie.findById(req.params.id, (err, movie) => {
+        if (err) {console.log(err);}
+        else {
+            res.json(reshape(movie, getUserId(req.headers.authorization)));
+        }
+    });
+});
+
 // ADD A MOVIE
 router.route('/').post((req, res) => {
     const {id} = req.body;
