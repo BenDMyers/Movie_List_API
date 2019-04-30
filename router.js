@@ -11,7 +11,7 @@ router.route('/').get((req, res) => {
     Movie.find((err, movies) => {
         if (err) {console.log(err);}
         else {
-            let reshapedMovies = movies.map((movie) => reshape(movie, getUserId(req.headers.authorization)));
+            let reshapedMovies = movies.map((movie) => reshape(movie, getUserId(req.get('authorization'))));
             let categorized = categorize(reshapedMovies);
             res.json(categorized);
         }
