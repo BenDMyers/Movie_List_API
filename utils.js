@@ -22,6 +22,8 @@ const reshape = (movie, userId) => {
 };
 
 const getUserId = (authHeader) => {
+    console.log('***AUTH***', typeof authHeader);
+    console.log(authHeader);
     var auth = authorization.parse(authHeader);
     return Buffer(auth.token, 'base64').toString().replace(':', '');
 }
